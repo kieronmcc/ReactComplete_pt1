@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
 import Person from './Person/Person';
+import Radium,{ StyleRoot } from 'radium';
 
 class App extends Component {
   state = {
@@ -59,6 +60,10 @@ class App extends Component {
       border: '1px solid blue',
       padding: '8px',
       cursor: 'pointer',
+      ':hover': {
+        backgroundColor: 'lightgreen',
+        color: 'black'
+      }
     };
 
     let people = null;
@@ -78,6 +83,10 @@ class App extends Component {
       );
 
       style.backgroundColor = 'red';
+      style [':hover'] = {
+        backgroundColor: 'salmon',
+        color: 'black'
+      };
     }
 
     // classes is valid css class list that can be assigned to className
@@ -90,6 +99,7 @@ class App extends Component {
     }
 
     return (
+      <StyleRoot>
         <div className="App">
           <h1>Hi, I'm a React App</h1>
           <p className={classes.join(' ')}>This is really working</p>
@@ -98,9 +108,10 @@ class App extends Component {
             onClick={this.togglePeopleHandler}>Toggle People</button>
           {people}
         </div>
+      </StyleRoot>
     );
     //return React.createElement('div', {className: 'App'}, React.createElement('h1', null,'Hi, I\'m a React App!!!!' ));
   }
 }
 
-export default App;
+export default Radium(App);
