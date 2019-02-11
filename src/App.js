@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import cssClasses from './App.css';
 import Person from './Person/Person';
+import ErrorBoundary from './ErrorBoundary/ErrorBoundary';
 
 class App extends Component {
   state = {
@@ -55,16 +56,21 @@ class App extends Component {
     let people = null;
     let btnClass = '';
 
+    // ErrorBoundary is like a decorator class
+    // that wraps another rendered class to enable custom
+    // Error handling
+    // use ids on objects so that JSX renders DOM effeciently
     if (this.state.showPeople) {
       people = (
         <div>
           {this.state.people.map((person, index) => {
-            return <Person 
-              click={() =>this.deletePersonHandler(index)}
-              name={person.name} 
-              age={person.age} 
-              key={person.id} //important to use key so that jsx updates DOM effeciently
-              changed={(event) =>this.NameChangeHandler(event, person.id)} />
+            return <ErrorBoundary key={person.id} >
+              <Person 
+                click={() =>this.deletePersonHandler(index)}
+                name={person.name} 
+                age={person.age} 
+                changed={(event) =>this.NameChangeHandler(event, person.id)} /> 
+              </ ErrorBoundary>
           })}
         </div> 
       );

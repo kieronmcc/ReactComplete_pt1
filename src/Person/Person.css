@@ -7,11 +7,10 @@
     text-align: center;
 }
 
-/*
-one option to use a media query would be to:
+
+/*one option to use a media query would be to:*/
 @media (min-width: 500px) {
     .Person {
         width:450px;
     }
 }
-*/
