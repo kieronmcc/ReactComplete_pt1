@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import cssClasses from './Person.css';
 import Auxillary from '../../../hoc/Auxillary';
+import withHOCClass from '../../../hoc/withHOCClass';
 
 class Person extends Component {
     render() {
@@ -35,24 +36,10 @@ class Person extends Component {
         // ]; 
         // Or you can use a
         // higher order component to provide the wrapping without the array and extra keys
-        // return (
-        //     // Using css classes like this mean that css can be scoped per component 
-        //     // if required
-        //     <Auxillary>
-        //         <p onClick={this.props.click}>I'm {this.props.name} and I am {this.props.age} years old!</p>
-        //         <p>{this.props.children}</p>
-        //         <input 
-        //             type="text" 
-        //             onChange={this.props.changed} 
-        //             value={this.props.name} 
-        //         />
-        //     </Auxillary>
-        // )
-        // Or you can use a built in React component called Fragment to do the same thing
         return (
             // Using css classes like this mean that css can be scoped per component 
             // if required
-            <React.Fragment>
+            <Auxillary>
                 <p onClick={this.props.click}>I'm {this.props.name} and I am {this.props.age} years old!</p>
                 <p>{this.props.children}</p>
                 <input 
@@ -60,9 +47,23 @@ class Person extends Component {
                     onChange={this.props.changed} 
                     value={this.props.name} 
                 />
-            </React.Fragment>
+            </Auxillary>
         )
+        // Or you can use a built in React component called Fragment to do the same thing
+        // return (
+        //     // Using css classes like this mean that css can be scoped per component 
+        //     // if required
+        //     <React.Fragment>
+        //         <p onClick={this.props.click}>I'm {this.props.name} and I am {this.props.age} years old!</p>
+        //         <p>{this.props.children}</p>
+        //         <input 
+        //             type="text" 
+        //             onChange={this.props.changed} 
+        //             value={this.props.name} 
+        //         />
+        //     </React.Fragment>
+        // )
     }
 };
 
-export default Person;
+export default withHOCClass(Person, cssClasses.Person);
