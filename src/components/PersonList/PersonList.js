@@ -1,22 +1,32 @@
-import React, {Component} from 'react';
+import React, {PureComponent} from 'react';
 import Person from './Person/Person';
 
 // Remember: ES6 inline function def with arrow function
 // if function only contains one line return statement
-class People extends Component {
+class People extends PureComponent {
     //*** Update lifecycle methods */
     // static getDerivedStateFromProps(props, state) {
     //     console.log('[PersonList.js] getDerivedStateFromProps');
     //     return state;
     // };
 
-    shouldComponentUpdate(nextProps, nextState) {
-        console.log('[PersonList.js] shouldComponentUpdate');
+    /* when the code is as below and every prop is checked
+     just implement a PureComponent which implements this
+     automatically. */
+    // shouldComponentUpdate(nextProps, nextState) {
+    //     console.log('[PersonList.js] shouldComponentUpdate');
 
-        // this function can be used with a condition to 
-        // stop the updating the DOM
-        return true;
-    };
+    //     // this function can be used with a condition to 
+    //     // stop the updating the DOM
+    //     if (nextProps.people !== this.props.people ||
+    //         nextProps.changed !== this.props.changed ||
+    //         nextProps.clicked !== this.props.clicked
+    //     ) {
+    //         return true;
+    //     } else {
+    //         return false;
+    //     }
+    // };
 
     getSnapshotBeforeUpdate(previousProps, previousState) {
         console.log('[PersonList.js] getSnapshotBeforeUpdate');

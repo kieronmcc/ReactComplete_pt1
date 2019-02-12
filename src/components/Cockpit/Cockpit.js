@@ -5,20 +5,20 @@ const cockpit = (props) => {
     /* The function declared here will be used for every
         render cycle of this functional component.
     */
-    useEffect(() => {
-        console.log('[Cockpit.js] useEffect');
-        /* e.g. http request....
-         so this provides equivalent of componentDidMount & componentDidUpdate
-         for everything else we can useState and pass in the props 
-         as an initial state
-         */
+    // useEffect(() => {
+    //     console.log('[Cockpit.js] useEffect');
+    //     /* e.g. http request....
+    //      so this provides equivalent of componentDidMount & componentDidUpdate
+    //      for everything else we can useState and pass in the props 
+    //      as an initial state
+    //      */
 
-         /* example simulate only running http request when create for first time */
-        setTimeout( () => {
-             alert('Saved data to cloud!', 1000);
-        });
-    }, [props.people]); // now will only react on a change to this data so can add more than one useEffect call
-    // can depend on multiple fields e.g. [a,b,c]
+    //      /* example simulate only running http request when create for first time */
+    //     setTimeout( () => {
+    //          alert('Saved data to cloud!', 1000);
+    //     });
+    // }, [props.people]); // now will only react on a change to this data so can add more than one useEffect call
+    // // can depend on multiple fields e.g. [a,b,c]
 
     useEffect(() => {
         console.log('[Cockpit.js] useEffect');
@@ -38,10 +38,10 @@ const cockpit = (props) => {
 
      // classes is valid css class list that can be assigned to className
      const classes =  []; 
-     if (props.people.length <=2) {
+     if (props.peopleLength <=2) {
        classes.push(cssClasses.red); 
      }
-     if (props.people.length <=1) {
+     if (props.peopleLength <=1) {
        classes.push(cssClasses.bold); 
      }
 
@@ -56,4 +56,4 @@ const cockpit = (props) => {
     );
 };
 
-export default cockpit;
+export default React.memo(cockpit);
