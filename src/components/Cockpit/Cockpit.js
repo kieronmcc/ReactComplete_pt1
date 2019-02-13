@@ -1,7 +1,15 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef, useContext } from 'react';
 import cssClasses from './Cockpit.css';
+import AuthContext from '../../context/auth-context';
 
 const cockpit = (props) => {
+    // implementing refs with func component with ReactHooks
+    const toggleBtnRef = useRef(null);
+    const authContext = useContext(AuthContext);
+
+    // Equivalent to accessing context statically in a class component
+    console.log("Cockpit context: ", authContext.authenticated);
+    
     /* The function declared here will be used for every
         render cycle of this functional component.
     */
@@ -22,11 +30,12 @@ const cockpit = (props) => {
 
     useEffect(() => {
         console.log('[Cockpit.js] useEffect');
-        const timer = setTimeout( () => {
-             alert('Fetched initial data from cloud!');
-        }, 1000);
+        // const timer = setTimeout( () => {
+        //      alert('Fetched initial data from cloud!');
+        // }, 1000);
+        toggleBtnRef.current.click();
         return () => {
-            clearTimeout(timer);
+            //clearTimeout(timer);
             console.log('[Cockpit.js] cleanup work in useEffect');
         };
     }, []); // so declare no dependencies. Runs when cockpit mounts/unmounts
@@ -50,8 +59,16 @@ const cockpit = (props) => {
             <h1>{props.title}</h1>
             <p className={classes.join(' ')}>This is really working</p>
             <button
-            className={btnClass}
-            onClick={props.clicked}>Toggle People</button>
+                ref={toggleBtnRef}
+                className={btnClass}
+                onClick={props.clicked}
+            >Toggle People
+            </button>
+            <AuthContext.Consumer>
+                {(context) => <button onClick={context.login}>
+                    Log in
+                </button>}
+            </AuthContext.Consumer>
         </div>
     );
 };

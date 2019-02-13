@@ -4,6 +4,8 @@ import People from '../components/PersonList/PersonList';
 import Cockpit from '../components/Cockpit/Cockpit';
 import withHOCClass from '../hoc/withHOCClass';
 import Auxillary from '../hoc/Auxillary';
+import AuthContext from '../context/auth-context';
+
 
 class App extends Component {
   constructor (props) {
@@ -14,12 +16,15 @@ class App extends Component {
   }
   state = {
     people: [
-      {id: 'dgd1', name: 'Kieron', age: 56},
+      {id: 'dgd1', name: 'Kieron', age: 56, fred: 'fred'},
       {id: 'dfgdgd2', name: 'Kelly', age: 25},
       {id: 'dfgdf3', name: 'Liz', age: 55}
     ],
+
     showPeople: false,
-    showCockpit: true
+    showCockpit: true,
+    changeCounter: 0,
+    authenticated: false
   };
   // **** start create lifecycle hooks ****
   static getDerivedStateFromProps(props, state) {
@@ -63,7 +68,7 @@ class App extends Component {
     });
 
     // Again don't manipulate the object ref directly
-    // make a comp with the spread operator
+    // make a copy with the spread operator
     // and change that
     const person = {
       ...this.state.people[personIndex]
@@ -77,12 +82,34 @@ class App extends Component {
     const people = [ ...this.state.people];
     people[personIndex] = person;
 
-    this.setState({people: people});
+    /* If state is updated from existing state this mechanism
+    isn't guaranteed to work because the call is synchronous but React
+    updates/renders state asynch. So results are unpredictable 
+    */
+    // this.setState({
+    //   people: people,
+    //   changeCounter: this.state.changeCounter +1
+    // });
+
+    /* Instead setState like this using an arrow function
+    which will be put in the call stack and executed async but
+    in the correct sequence
+    */
+   this.setState( (prevState, props) => {
+      return {
+        people: people,
+        changeCounter: prevState.changeCounter +1
+      }
+   });
   };
 
   togglePeopleHandler = () => {
       const currentShowState = this.state.showPeople;
       this.setState({showPeople: !currentShowState});
+  };
+
+  loginHandler = () => {
+    this.setState({authenticated: true});
   };
 
   render() {
@@ -94,7 +121,9 @@ class App extends Component {
       people = <People 
             people={this.state.people} 
             clicked={this.deletePersonHandler}
-            changed={this.NameChangeHandler} />; 
+            changed={this.NameChangeHandler} 
+            isAuth={this.state.authenticated}
+          />; 
     }  
 
     return (
@@ -106,15 +135,22 @@ class App extends Component {
         >
           Remove Cockpit
         </button>
-        { this.state.showCockpit ? (
-          <Cockpit 
-              title={this.props.appTitle}
-              showPeople={this.state.showPeople}
-              peopleLength={this.state.people.length}
-              clicked={this.togglePeopleHandler}
-          />
-        ) : null }
-          {people}
+        <AuthContext.Provider 
+          value={{
+            authenticated: this.state.authenticated, 
+            login: this.loginHandler
+          }}
+        >
+          { this.state.showCockpit ? (
+            <Cockpit 
+                title={this.props.appTitle}
+                showPeople={this.state.showPeople}
+                peopleLength={this.state.people.length}
+                clicked={this.togglePeopleHandler}
+            />
+          ) : null }
+            {people}
+        </AuthContext.Provider>
         </Auxillary>
     );
     //return React.createElement('div', {className: 'App'}, React.createElement('h1', null,'Hi, I\'m a React App!!!!' ));
